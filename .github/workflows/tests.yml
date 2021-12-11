@@ -16,75 +16,26 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  test-node12:
+  test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node: [ '12', '14', '16' ]
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
       # Setup NodeJS
-      - name: Set up NodeJS
+      - name: Set up NodeJS (${{ matrix.node }})
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: ${{ matrix.node }}
           cache: 'yarn'
       
       # Install project dependencies
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
-
-      # Run tests
-      - name: Run tests
-        run: yarn test
-
-  test-node14:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      
-      # Setup NodeJS
-      - name: Set up NodeJS
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-          cache: 'yarn'
-      
-      # Install project dependencies
-      - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
-
-      # Run tests
-      - name: Run tests
-        run: yarn test
-        
-  test-node16:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      
-      # Setup NodeJS
-      - name: Set up NodeJS
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-          cache: 'yarn'
-      
-      # Install project dependencies
-      - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
       # Run tests
