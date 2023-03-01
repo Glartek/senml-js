@@ -5,6 +5,7 @@ import {
   Validate,
   Normalize,
   Format,
+  Record,
   ErrEmptyName,
   ErrBadChar,
   ErrNoValues,
@@ -197,4 +198,66 @@ describe('Normalize SenML record', () => {
   it('should be able to normalize senML record with error', () => {
     expect(Normalize(emptyName)).to.equal(ErrEmptyName);
   });
+});
+
+describe('rfc8428', () => {
+  // TODO: should we maybe include the whole example 5.1.3 from rfc8428 here?
+  it('normalizes example 5.1.3 correctly', () => {
+    const input =
+      [
+        {
+          "bn": "urn:dev:ow:10e2073a01080063",
+          "bt": 1.320067464e+09,
+          "bu": "%RH",
+          "v": 20,
+        },
+        {
+          "u": "lon",
+          "v": 24.30621
+        },
+        {
+          "t": 60,
+          "v": 20.3
+        },
+      ];
+
+    const expected: Record[] =
+      [
+        {
+          "bn": "",
+          "bs": 0,
+          "bt": 0,
+          "bu": "",
+          "bv": 0,
+          "n": "urn:dev:ow:10e2073a01080063",
+          "u": "%RH",
+          "t": 1.320067464e+09,
+          "v": 20
+        },
+        {
+          "bn": "",
+          "bs": 0,
+          "bt": 0,
+          "bu": "",
+          "bv": 0,
+          "n": "urn:dev:ow:10e2073a01080063",
+          "u": "lon",
+          "t": 1.320067464e+09,
+          "v": 24.30621
+        },
+        {
+          "bn": "",
+          "bs": 0,
+          "bt": 0,
+          "bu": "",
+          "bv": 0,
+          "n": "urn:dev:ow:10e2073a01080063",
+          "u": "%RH",
+          "t": 1.320067524e+09,
+          "v": 20.3
+        },
+      ];
+
+    expect(Normalize({ Records: input })).to.deep.equal({ Records: expected });
+  })
 });
