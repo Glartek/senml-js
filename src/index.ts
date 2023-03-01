@@ -107,8 +107,8 @@ export function Normalize(p: Pack): Pack | Error {
     if (r.bs && r.bs !== 0) bsum = r.bs;
     if (r.bu && r.bu !== '') bunit = r.bu;
     if (r.bn && r.bn.length > 0) bname = r.bn;
-    if (r.t && btime) r.t = r.t + btime;
-
+    
+    r.t = (r.t ?? 0) + btime;
     r.n = bname + (r.n ?? '');
 
     if (r.s && bsum) r.s = bsum + r.s;
