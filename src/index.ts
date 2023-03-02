@@ -108,8 +108,8 @@ export function Normalize(p: Pack): Pack | Error {
     if (r.bu && r.bu !== '') bunit = r.bu;
     if (r.bn && r.bn.length > 0) bname = r.bn;
     
-    r.t = (r.t ?? 0) + btime;
-    r.n = bname + (r.n ?? '');
+    r.t = (r.t !== undefined && r.t !== null ? r.t : 0) + btime;
+    r.n = bname + (r.n !== undefined && r.n !== null ? r.n : '');
 
     if (r.s && bsum) r.s = bsum + r.s;
     if ((!r.u || r.u === '') && bunit) r.u = bunit;
