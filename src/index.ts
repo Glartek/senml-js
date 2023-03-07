@@ -1,3 +1,5 @@
+import { isNullish } from "./utils";
+
 export const ErrVersionChange = { name: 'ErrVersionChange', message: 'version change' };
 export const ErrUnsuportedFormat = { name: 'ErrUnsupportedFormat', message: 'unsupported format' };
 export const ErrEmptyName = { name: 'ErrEmptyName', message: 'empty name' };
@@ -162,10 +164,10 @@ export function Validate(p: Pack): Error | null {
     if (name.length === 0) return ErrEmptyName;
 
     let valCnt = 0;
-    if (r.v) valCnt++;
-    if (r.vb) valCnt++;
-    if (r.vd) valCnt++;
-    if (r.vs) valCnt++;
+    if (!isNullish(r.v)) valCnt++;
+    if (!isNullish(r.vb)) valCnt++;
+    if (!isNullish(r.vd)) valCnt++;
+    if (!isNullish(r.vs)) valCnt++;
 
     if (valCnt > 1) return ErrTooManyValues;
     if (r.s || bsum !== 0) valCnt++;

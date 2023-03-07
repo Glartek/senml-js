@@ -198,6 +198,85 @@ describe('Normalize SenML record', () => {
   it('should be able to normalize senML record with error', () => {
     expect(Normalize(emptyName)).to.equal(ErrEmptyName);
   });
+
+  it('should be able to handle nullish values', () => {
+    // vb has value "false", which should be identified as a valid value
+    const input: Record[] =
+      [
+        {
+          bn: "urn:dev:mac:d6ea13fffff5113b:",
+          bt: 1677102089.0,
+          n: "batt",
+          u: "%EL",
+          v: 0,
+        },
+        {
+          n: "n1",
+          u: "unit",
+          vb: false,
+        },
+        {
+          n: "n2",
+          u: "unit",
+          vd: '',
+        },
+        {
+          n: "n3",
+          u: "unit",
+          vs: '',
+        }
+      ];
+
+    const expected: Record[] =
+      [
+        {
+          bn: '',
+          bt: 0,
+          n: 'urn:dev:mac:d6ea13fffff5113b:batt',
+          u: '%EL',
+          v: 0,
+          t: 1677102089,
+          bv: 0,
+          bu: '',
+          bs: 0
+        },
+        {
+          n: 'urn:dev:mac:d6ea13fffff5113b:n1',
+          vb: false,
+          t: 1677102089,
+          u: 'unit',
+          bt: 0,
+          bv: 0,
+          bu: '',
+          bn: '',
+          bs: 0
+        },
+        {
+          n: 'urn:dev:mac:d6ea13fffff5113b:n2',
+          t: 1677102089,
+          u: 'unit',
+          vd: '',
+          bt: 0,
+          bv: 0,
+          bu: '',
+          bn: '',
+          bs: 0
+        },
+        {
+          n: 'urn:dev:mac:d6ea13fffff5113b:n3',
+          t: 1677102089,
+          u: 'unit',
+          vs: '',
+          bt: 0,
+          bv: 0,
+          bu: '',
+          bn: '',
+          bs: 0
+        }
+      ];
+
+    expect(Normalize({ Records: input })).to.deep.equal({ Records: expected });
+  });
 });
 
 describe('rfc8428', () => {
@@ -259,5 +338,5 @@ describe('rfc8428', () => {
       ];
 
     expect(Normalize({ Records: input })).to.deep.equal({ Records: expected });
-  })
+  });
 });

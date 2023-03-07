@@ -5,3 +5,7 @@ export function fromHex(h: string): string {
     }
     return decodeURIComponent(escape(s))
 }
+
+export function isNullish(h: string | number | boolean | null | undefined): boolean {
+    return h === null || h === undefined;
+}
