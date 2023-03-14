@@ -124,7 +124,7 @@ export function Normalize(p: Pack<Record>): Pack<NormalizedRecord> | Error {
 
     // If the version is default, it must not be present in resolved records.
     // Validate method takes care that the version is the same on all the records.
-    if (r.bv === defaultVersion) r.bv = 0;
+    if (r.bver === defaultVersion) r.bver = 0;
 
     // Remove Base Values from the Record.
     delete r.bn;
